@@ -1,19 +1,18 @@
 {
-	"name": "google-calendar-widget",
+	"name": "gcal-widget",
 	"version": "1.0.0",
 	"description": "Google Calendar Widget",
 	"devDependencies": {
-		"babel-cli": "6.26.0",
-		"babel-core": "^6.26.3",
-		"babel-loader": "7.1.5",
-		"babel-preset-env": "1.7.0",
-		"babel-preset-react": "6.24.1",
-		"copy-webpack-plugin": "4.6.0",
-		"liferay-npm-build-support": "^2.14.1",
 		"liferay-npm-bundler": "^2.14.1",
+		"liferay-npm-build-support": "^2.14.1",
+		"copy-webpack-plugin": "4.6.0",
 		"webpack": "4.29.6",
 		"webpack-cli": "3.3.0",
-		"webpack-dev-server": "3.2.1"
+		"webpack-dev-server": "3.2.1",
+		"babel-cli": "6.26.0",
+		"babel-preset-env": "1.7.0",
+		"babel-preset-react": "6.24.1",
+		"babel-loader": "7.1.5"
 	},
 	"dependencies": {
 		"react": "16.8.6",
@@ -29,7 +28,7 @@
 		"com.liferay.portlet.display-category": "category.sample",
 		"com.liferay.portlet.header-portlet-css": "/css/styles.css",
 		"com.liferay.portlet.instanceable": true,
-		"javax.portlet.name": "googlecalendarwidget",
+		"javax.portlet.name": "gcalwidget",
 		"javax.portlet.security-role-ref": "power-user,user",
 		"javax.portlet.display-name": "Google Calendar Widget"
 	},

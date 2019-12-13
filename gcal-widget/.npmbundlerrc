@@ -3,7 +3,7 @@
 		"output-dir": "dist",
 		"features": {
 			"js-extender": true,
-			"web-context": "/react-widget-test",
+			"web-context": "/gcal-widget",
 			"configuration": "features/configuration.json"
 		}
 	},

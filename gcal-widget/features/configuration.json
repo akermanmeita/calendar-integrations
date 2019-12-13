@@ -1,7 +1,7 @@
 {
 	"$schema": "https://raw.githubusercontent.com/liferay/liferay-js-toolkit/master/resources/schemas/configuration.schema.json",
 	"system": {
-		"category": "google-calendar-widget",
+		"category": "gcal-widget",
 		"name": "Google Calendar Widget",
 		"fields": {
 			"fruit": {
