@@ -1,0 +1,11 @@
+{
+	"liferayDir": "C:\\Users\\Harjoittelija\\Desktop\\liferay-ce-portal-7.2.0-ga1",
+	"webpack": {
+		"rules": [
+			{
+				"test": "src\\\\.*\\.js$",
+				"use": "babel-loader"
+			}
+		]
+	}
+}

@@ -1,0 +1,55 @@
+{
+	"$schema": "https://raw.githubusercontent.com/liferay/liferay-js-toolkit/master/resources/schemas/configuration.schema.json",
+	"system": {
+		"category": "google-calendar-widget",
+		"name": "Google Calendar Widget",
+		"fields": {
+			"fruit": {
+				"type": "string",
+				"name": "Favorite fruit",
+				"description": "Choose the fruit you like the most",
+				"default": "orange",
+				"options": {
+					"orange": "An orange",
+					"pear": "A pear",
+					"apple": "An apple"
+				}
+			}
+		}
+	},
+	"portletInstance": {
+		"fields": {
+			"server": {
+				"type": "string",
+				"name": "Server Address",
+				"description": "Address to the server which handles API integration"
+			},
+			"calendar_id": {
+				"type": "string",
+				"name": "Calendar ID",
+				"description": "ID of the public Google Calendar"
+			},
+			"days": {
+				"type": "float",
+				"name": "Maximum days",
+				"description": "Maximum amount of days from now for events",
+				"default": 5,
+				"options": {
+					"1":1,
+					"2":2,
+					"3":3,
+					"4":4,
+					"5":5,
+					"6":6,
+					"7":7
+				}
+			},
+			"accept_cache": {
+				"type": "boolean",
+				"name": "accept-cache",
+				"description": "Defines whether cached results are accepted (max 24h ago cached)",
+				"default":true
+			}
+		}
+	}
+}

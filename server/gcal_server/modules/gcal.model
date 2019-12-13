@@ -1,0 +1,8 @@
+const mongoose = require("mongoose");
+const gcalSchema = new mongoose.Schema({
+ timestamp : {type: String},
+ cal_id : {type: String},
+ data : {type: Object}
+});
+const gcal_cache = mongoose.model("gcal_cache", gcalSchema);
+module.exports = gcal_cache;

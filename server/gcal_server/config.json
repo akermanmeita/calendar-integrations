@@ -1,0 +1,3 @@
+{
+    "db_address":"mongodb://mongo:27017/gcal_cache"
+}

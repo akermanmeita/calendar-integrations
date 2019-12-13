@@ -1,0 +1,15 @@
+version: "2"
+services:
+  server:
+    container_name: gcal_server
+    restart: always
+    build: ./gcal_server/.
+    ports:
+      - "8008:8008"
+    links:
+      - mongo
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - "27017:27017"
