@@ -28,4 +28,9 @@ File should look like`
 ```
 
 
-Run the server and database `docker-compose build` then `docker-compose up`
+Run the server and database 
+```
+cd ./server
+docker-compose build
+docker-compose up
+```
