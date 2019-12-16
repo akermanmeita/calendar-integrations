@@ -9,18 +9,17 @@ export default class extends React.Component {
 		}
 	}
 	getEvents() {
-		console.log(this.props.configuration.portletInstance.calendar_id);
-		console.log(this.props.configuration.portletInstance.server);
+		//console.log(this.props.configuration.portletInstance.calendar_id);
+		//console.log(this.props.configuration.portletInstance.server);
 
 		var options = {
 			method: 'POST',
 			headers: { 'Accept': 'application/json','Content-Type': 'application/json' },
 			body: JSON.stringify({id: this.props.configuration.portletInstance.calendar_id, days: this.props.configuration.portletInstance.days, accept_cache: this.props.configuration.portletInstance.accept_cache})
 		}
-		fetch(`http://localhost:8008/eventsList`,options).then((res) => res.json()).then((data) => this.setState({calData:data})).catch( (err)=>console.error(err));
+		fetch(`${this.props.configuration.portletInstance.server}/eventsList`,options).then((res) => res.json()).then((data) => this.setState({calData:data})).catch( (err)=>console.error(err));
 	}
 	componentDidMount() {
-		console.log("Mount");
 		this.getEvents();
 	}
 	render() {
