@@ -5,6 +5,6 @@ const gcal_model = require("./gcal.model");
 var address = 'mongodb://mongo:27017/gcal_cache' //could be swapped for config.json value
 
 const connectDb = () => {
-    return mongoose.connect(address);
+    return mongoose.connect(address, {useUnifiedTopology:true, useNewUrlParser:true});
 };
 module.exports = connectDb;

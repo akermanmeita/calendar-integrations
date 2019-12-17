@@ -2,7 +2,7 @@
 
 Add portlet to Liferay (7.2) `npm run build` and then deploy it manually by copying the .jar from the `/dist` directory to your liferay server, add it to a page and configure it (on the page via the settings) with a server address and a calendar-id
 ```
-Server address: http:// (if default and hosted lcoally)
+Server address: http://localhost:8008 (if default and hosted locally)
 
 Example calendars to use
     nhl_6_%45dmonton+%4filers#sports@group.v.calendar.google.com,
