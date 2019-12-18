@@ -29,7 +29,7 @@ export default class extends React.Component {
 			events = this.state.calData.map((event, key) => <li key={event.index}>{event.start} - {event.summary}</li>);
 		}
 		else if (typeof this.state.calData.code === 'number') {
-			events = <li>{this.state.calData.code} Error</li>
+			events = <li>Error: {this.state.calData.code} {this.state.calData.message}</li>
 		}
 		else {
 			events = this.state.calData.map((event, key) => <li key={event.index}>{event.start} - {event.summary}</li>);
