@@ -10,7 +10,6 @@ const moment = require('moment');
 async function listEvents(cal_id, auth, maxDays=5, maxEvents=999) {
   var res = await new Promise((resolve,reject) => { 
     var maxTime = new Date();
-    console.log(maxDays);
     try {
       if (typeof maxDays === 'string') {
         maxDays = parseInt(maxDays, 10);

@@ -29,7 +29,6 @@ app.use('node_modules',express.static(__dirname + './node_modules'));
 app.post('/eventsList', async function(req, res) {
     try {
         var found = await gcal_cache.findOne({cal_id:req.body.id, days:req.body.days}); //searches cache-db for wanted calendar
-        console.log(found);
         if(req.body.accept_cache == 'false') { //check for parameter to decline cached result
             var list = await widget.eventsList(req.body.id, req.body.days).catch(e => {console.error('server.js:37 ' + e);});
             
