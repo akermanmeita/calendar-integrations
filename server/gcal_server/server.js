@@ -28,7 +28,8 @@ app.use('node_modules',express.static(__dirname + './node_modules'));
 
 app.post('/eventsList', async function(req, res) {
     try {
-        var found = await gcal_cache.findOne({cal_id:req.body.id}); //searches cache-db for wanted calendar
+        var found = await gcal_cache.findOne({cal_id:req.body.id, days:req.body.days}); //searches cache-db for wanted calendar
+        console.log(found);
         if(req.body.accept_cache == 'false') { //check for parameter to decline cached result
             var list = await widget.eventsList(req.body.id, req.body.days).catch(e => {console.error('server.js:37 ' + e);});
             
@@ -70,7 +71,7 @@ app.post('/eventsList', async function(req, res) {
                         res.send(list);
                         console.log("cached but too old");
                     }
-                    var cach = new gcal_cache({timestamp: new Date(), cal_id:req.body.id, data:list}); //caches new result
+                    var cach = new gcal_cache({timestamp: new Date(), cal_id:req.body.id, days:req.body.days, data:list}); //caches new result
                     await cach.save().then(()=> console.info('Saved gcal data'));
                 }
             }
@@ -86,7 +87,7 @@ app.post('/eventsList', async function(req, res) {
                     res.send(list);
                 }
 
-                var cach = new gcal_cache({timestamp: new Date(), cal_id:req.body.id, data:list});
+                var cach = new gcal_cache({timestamp: new Date(), cal_id:req.body.id, days:req.body.days, data:list});
                 await cach.save().then(()=> console.info('Saved gcal data'));
                 console.log("fetched");
             }
