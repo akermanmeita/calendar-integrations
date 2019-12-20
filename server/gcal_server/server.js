@@ -28,70 +28,80 @@ app.use('node_modules',express.static(__dirname + './node_modules'));
 
 app.post('/eventsList', async function(req, res) {
     try {
-        var found = await gcal_cache.findOne({cal_id:req.body.id, days:req.body.days}); //searches cache-db for wanted calendar
-        if(req.body.accept_cache == 'false') { //check for parameter to decline cached result
-            var list = await widget.eventsList(req.body.id, req.body.days).catch(e => {console.error('server.js:37 ' + e);});
-            
-            console.log(typeof list.code);
-            if(typeof list.code !== 'undefined') {
-                var err = {code:list.code,message:list.errors[0].message}
-                res.status(list.code);
-                res.send(err);
-            }
-            else {
-                res.send(list);
-                console.info("didn't accept-cache so fetched");    
-            }
-        }
-        else {
-            if(found !== null) { //checks if the wanted result was found
-                if(timeCheck.isToday(found.timestamp) ==true ) {  //checks if the timestamp on cached is from today
-                    var list = found.data;
+        //parse the id array
+        var idArr = req.body.id.split(',');
+        //async function to wrap the for loop for the array of IDs
+        const respF = async _ => {
+            var resultArr = []; //array for results
 
-                    if(typeof list.code !== 'undefined') {
-                        var err = {code:list.code,message:list.errors[0].message}
-                        res.status(list.code);
-                        res.send(err);        
-                    }
-                    else {
-                        res.send(list); //responds from db
-                        console.log("cached");
-                    }
-                }
-                else { //if timestamp is too old then calls Google API to get events
-                    var list = await widget.eventsList(req.body.id, req.body.days).catch(e => {console.error('server.js:48 ' + e);});
-                    
-                    if(typeof list.code !== 'undefined') {
-                        var err = {code:list.code,message:list.errors[0].message}
-                        res.status(list.code);
-                        res.send(err);      
-                    } 
-                    else {
-                        res.send(list);
-                        console.log("cached but too old");
-                    }
-                    var cach = new gcal_cache({timestamp: new Date(), cal_id:req.body.id, days:req.body.days, data:list}); //caches new result
-                    await cach.save().then(()=> console.info('Saved gcal data'));
-                }
-            }
-            else { //if no cached result calls API and saves restult
-                var list = await widget.eventsList(req.body.id, req.body.days).catch(e => {console.error('server.js:55 ' + e);});
+            for (var i=0; i<idArr.length; i++) { //for loop to get events for all requested calendars (cached or not)
                 
-                if(typeof list.code !== 'undefined') {
-                    var err = {code:list.code,message:list.errors[0].message}
-                    res.status(list.code);
-                    res.send(err);      
-                }
-                else {
-                    res.send(list);
-                }
+                var found = await gcal_cache.findOne({cal_id:idArr[i], days:req.body.days}); //searches cache-db for wanted calendar
 
-                var cach = new gcal_cache({timestamp: new Date(), cal_id:req.body.id, days:req.body.days, data:list});
-                await cach.save().then(()=> console.info('Saved gcal data'));
-                console.log("fetched");
-            }
+                if (req.body.accept_cache == 'false') { //if request specifies not to use cached results
+                    //fetch events from API
+                    var list = await widget.eventsList(idArr[i], req.body.days).catch(e => {console.error('server.js:37 ' + e);});
 
+                    if(typeof list.code !== 'undefined') { //checks for error code in response
+                        var err = {code:list.code,message:list.errors[0].message}
+                        resultArr.push(err); //adds error to result
+                    }
+                    else { //if no error
+                        resultArr.push(list); //adds result to response
+                        console.info("didn't accept-cache so fetched");    
+                    }
+                }
+                else { //if cache is accepted
+                    if (found !== null) { //if there is content in cache
+                        if(timeCheck.isToday(found.timestamp) == true) {  //checks if the timestamp on cached is from today
+                            var list = found.data;
+        
+                            if(typeof list.code !== 'undefined') { //checks for error
+                                var err = {code:list.code,message:list.errors[0].message}
+                                resultArr.push(err);       
+                            }
+                            else {
+                                resultArr.push(list);
+                                console.log("cached");
+                            }
+                        }
+                        else { //if timestamp is too old then calls Google API to get events
+                            var list = await widget.eventsList(req.body.id, req.body.days).catch(e => {console.error('server.js:48 ' + e);});
+                            
+                            if(typeof list.code !== 'undefined') { //checks for error
+                                var err = {code:list.code,message:list.errors[0].message}
+                                resultArr.pust(err);
+                            } 
+                            else {
+                                resultArr.push(list);
+                                console.log("cached but too old");
+                            }
+                            //caches new result
+                            var cach = new gcal_cache({timestamp: new Date(), cal_id:req.body.id, days:req.body.days, data:list}); //caches new result
+                            await cach.save().then(()=> console.info('Saved gcal data'));
+                        }
+                    }
+                    else { //if there is no cached result gets events
+                        var list = await widget.eventsList(idArr[i], req.body.days).catch(e => {console.error('server.js:55 ' + e);});
+                    
+                        if(typeof list.code !== 'undefined') { //checks for error
+                            var err = {code:list.code,message:list.errors[0].message}
+                            //res.status(list.code);
+                            resultArr.push(err);      
+                        }
+                        else {
+                            resultArr.push(list);
+                        }
+
+                        var cach = new gcal_cache({timestamp: new Date(), cal_id:idArr[i], days:req.body.days, data:list});
+                        await cach.save().then(()=> console.info('Saved gcal data'));
+                        console.log("fetched");
+                    }
+                }
+            };
+            res.send(resultArr); //sends response
         }
+        respF(); //calls function
     }
     catch(err) {
         console.error(err);

@@ -16,7 +16,7 @@ async function listEvents(cal_id, auth, maxDays=5, maxEvents=999) {
       }
     }
     catch(e) {
-      console.log('Events20 ' + e)
+      console.log('events.js:19 ' + e)
     }
     maxTime.setDate(maxTime.getDate() + maxDays);
     
@@ -35,47 +35,48 @@ async function listEvents(cal_id, auth, maxDays=5, maxEvents=999) {
       calendar.events.list(opts, 
         async function(err, response) {
           try {
-          if(err) { 
-            return await Promise.reject(err)
-          }
-          if(response === undefined) {
-            return await Promise.reject('Response is undefined');
-          }
-          else {
-            if(response.data !== undefined) {
-              var events = response.data.items;
+            if(err) { 
+              return await Promise.reject(err)
+            }
+            if(response === undefined) {
+              return await Promise.reject('Response is undefined');
             }
             else {
-              return await Promise.reject('events.js:53 Failed \n response.data is undefined');
-            }
-          }
-          
-          
-          if(events.length == 0) { 
-            console.log("no events");
-            return resolve(["no events found"]);
-          }
-          else { 
-            var results = [];
-            var i = 0;
-            for (item of response.data.items) {
-              i++;
-              if (item.start.dateTime) {
-                moment.locale('fi');
-                var time = moment(item.start.dateTime).format('LLL');
-
-                results.push({index: i,start:time, summary:item.summary});
+              if(response.data !== undefined) {
+                var events = response.data.items;
               }
               else {
-                results.push({index: i,start:item.start.date, summary:item.summary});
+                return await Promise.reject('events.js:53 Failed \n response.data is undefined');
               }
             }
-            return resolve(results);
-          }
-        } catch(error) {
+          
+            if(events.length == 0) { 
+              console.log("no events");
+              return resolve(["no events found"]);
+            }
+            else { 
+              //console.log(response.data.summary);
+              var results = [];
+              var i = 0;
+              for (item of response.data.items) {
+                i++;
+                if (item.start.dateTime) {
+                  moment.locale('fi');
+                  var time = moment(item.start.dateTime).format('LLL');
+
+                  results.push({index: i,start:time, summary:item.summary});
+                }
+                else {
+                  results.push({index: i,start:item.start.date, summary:item.summary});
+                }
+              }
+              return resolve({name: response.data.summary, data:results});
+            }
+        } 
+        catch(error) {
           reject(error);
         }
-        });
+      });
     }
     catch(err) {
       console.error('events.js:82 '+ err);
