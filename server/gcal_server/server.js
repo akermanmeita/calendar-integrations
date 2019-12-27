@@ -99,6 +99,22 @@ app.post('/eventsList', async function(req, res) {
                     }
                 }
             };
+            var allErr = false;
+            if (resultArr[0].code !== '200') {
+                allErr = true;
+                for (var i=1; i<resultArr.length; i++) {
+                    if (allErr === true && resultArr[i].code === '200') {
+                        allErr = false;
+                    }
+                }
+            }
+
+            if (allErr === true) {
+                res.status(resultArr[0].code);
+            }
+            else {
+                res.status(200);
+            }
             res.send(resultArr); //sends response
         }
         respF(); //calls function

@@ -8,6 +8,10 @@ Example calendars to use
     nhl_6_%45dmonton+%4filers#sports@group.v.calendar.google.com,
     nhl_30_%4dinnesota+%57ild#sports@group.v.calendar.google.com,
     fi.finnish#holiday@group.v.calendar.google.com
+
+    you can use multiple calendars at once by separating IDs with , 
+
+    example fi.finnish#holiday@group.v.calendar.google.com,nhl_6_%45dmonton+%4filers#sports@group.v.calendar.google.com
 ```
 Create a Google Service account, download the details as json, name the file `privatekey.json` and place it in `./server/gcal_server`
 
