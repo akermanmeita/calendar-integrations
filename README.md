@@ -1,6 +1,10 @@
 # calendar-integration
 
-Add portlet to Liferay (7.2) `npm run build` and then deploy it manually by copying the .jar from the `/dist` directory to your liferay server, add it to a page and configure it (on the page via the settings) with a server address and a calendar-id
+Add portlet to Liferay (7.2) `npm run build` and then deploy it manually by copying the .jar from the `/dist` directory to your liferay server, add it to a page and configure it (on the page via the settings) with a server address and a calendar-id.
+
+** Portlet issues **
+Portlet does not appear to send a request to the API despite hardcoded URL or dynamic one. 
+Rendering may not work as structure of response is now wrapped in an array to accomodate multiple calendars with one request.
 ```
 Server address: http://localhost:8008 (if default and hosted locally)
 

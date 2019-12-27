@@ -24,15 +24,26 @@ export default class extends React.Component {
 	}
 	render() {
 		var events;
+		console.log(this.state.calData);
+		console.info(this.state.calData[0]);
 
-		if (typeof this.state.calData.code === undefined) {
-			events = this.state.calData.map((event, key) => <li key={event.index}>{event.start} - {event.summary}</li>);
+		if (typeof this.state.calData[0].code == 'undefined') {
+			if (this.state.calData.length == 1) {
+				events = this.state.calData.map((event, key) => <li key={event.index}>{event.start} - {event.summary}</li>);
+			}
+			else {
+				for (var i=0; i<this.state.calData.length; i++) {
+					events = events + this.state.calData[i].map((event, key) => <li key={event.index}>{event.start} - {event.summary}</li>);
+				}
+			}
 		}
-		else if (typeof this.state.calData.code === 'number') {
-			events = <li>Error: {this.state.calData.code} {this.state.calData.message}</li>
+		else if (typeof this.state.calData[0].code === 'number') {
+			events = <li>Error: {this.state.calData[0].code} {this.state.calData.message}</li>
 		}
 		else {
-			events = this.state.calData.map((event, key) => <li key={event.index}>{event.start} - {event.summary}</li>);
+			for (var i=0; i<this.state.calData.length; i++) {
+				events = events + this.state.calData[i].map((event, key) => <li key={event.index}>{event.start} - {event.summary}</li>);
+			}		
 		}
 
 		return (

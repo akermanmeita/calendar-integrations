@@ -100,7 +100,7 @@ app.post('/eventsList', async function(req, res) {
                 }
             };
             var allErr = false;
-            if (resultArr[0].code !== '200') {
+            if (typeof resultArr[0].code !== 'undefined') {
                 allErr = true;
                 for (var i=1; i<resultArr.length; i++) {
                     if (allErr === true && resultArr[i].code === '200') {
@@ -108,13 +108,13 @@ app.post('/eventsList', async function(req, res) {
                     }
                 }
             }
-
             if (allErr === true) {
-                res.status(resultArr[0].code);
+                res.status(parseInt(resultArr[0].code));
             }
             else {
                 res.status(200);
             }
+            //console.log(resultArr);
             res.send(resultArr); //sends response
         }
         respF(); //calls function
